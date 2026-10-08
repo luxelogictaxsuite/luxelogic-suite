@@ -17,7 +17,7 @@ export default function MissingDocsDialog({ submission, onClose }) {
         submissionId: submission.id,
         message,
       });
-      setResult(res?.ok ? `Email sent to ${res.email || 'client'}.` : 'Failed to send.');
+      setResult(res?.data?.ok ? `Email sent to ${res.data.email || 'client'}.` : 'Failed to send.');
     } catch (e) {
       setResult(e.message || 'Failed to send email.');
     }

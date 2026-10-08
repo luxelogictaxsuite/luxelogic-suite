@@ -27,7 +27,7 @@ export default function MobileSelect({ value, onChange, options, placeholder = '
       >
         <option value="">{placeholder}</option>
         {opts.map((o) => (
-          <option key={o.value} value={o.value}>{o.label}</option>
+          <option key={o.value} value={o.value} disabled={o.disabled}>{o.label}</option>
         ))}
       </select>
     );

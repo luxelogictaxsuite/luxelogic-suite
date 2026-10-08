@@ -276,9 +276,12 @@ const auth = {
     }
   },
 
+  // Keeps the exact page (including ?submission=...) so the user lands back
+  // on it right after logging in.
   redirectToLogin(returnTo) {
-    const target = returnTo || window.location.href;
-    window.location.href = `/login?return_to=${encodeURIComponent(target)}`;
+    const url = new URL(returnTo || window.location.href, window.location.origin);
+    const path = url.pathname + url.search + url.hash;
+    window.location.href = `/login?returnTo=${encodeURIComponent(path)}`;
   },
 };
 

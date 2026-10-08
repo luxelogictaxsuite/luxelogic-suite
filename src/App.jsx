@@ -8,6 +8,7 @@ import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import ScrollToTop from './components/ScrollToTop';
 import ProtectedRoute from '@/components/ProtectedRoute';
+import LoginRedirect from '@/components/LoginRedirect';
 // Add page imports here
 import Login from '@/pages/Login';
 import Register from '@/pages/Register';
@@ -92,7 +93,7 @@ const AuthenticatedApp = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/form/:id" element={<FormPage />} />
         <Route path="/waitlist" element={<Waitlist />} />
-        <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login?returnTo=/suite" replace />} />}>
+        <Route element={<ProtectedRoute unauthenticatedElement={<LoginRedirect />} />}>
           <Route path="/suite" element={<Suite />}>
             <Route index element={<SuiteDashboard />} />
             <Route path="queue" element={<ReturnQueue />} />
@@ -107,7 +108,7 @@ const AuthenticatedApp = () => {
           </Route>
         </Route>
       </Route>
-      <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login?returnTo=/admin" replace />} />}>
+      <Route element={<ProtectedRoute unauthenticatedElement={<LoginRedirect />} />}>
         <Route path="/admin" element={<Admin />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />

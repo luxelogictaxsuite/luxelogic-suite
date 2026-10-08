@@ -28,17 +28,8 @@ export default function ApplicationForm({ data, setData }) {
     setSaving(true); setError('');
     try {
       await base44.entities.PreparerApplication.create({ ...data, projected_returns: data.projected_returns ? +data.projected_returns : undefined, status: 'New' });
-      // Bridge: immediately create a Preparer record so the PTIN flows into the
-      // system — the admin can then add seat key, funded returns, etc. without
-      // waiting for approval. Runs server-side to bypass Preparer create RLS.
-      try {
-        await base44.functions.invoke('bridgePreparer', {
-          full_name: data.full_name,
-          email: data.email,
-          ptin: data.ptin,
-          phone: data.phone,
-        });
-      } catch (bridgeErr) { /* best-effort — don't block the application */ }
+      // The preparer profile + login invite are created when an admin APPROVES
+      // the application (Admin → Applications), never automatically.
       setDone(true);
     } catch (e) { setError(e.message || 'Something went wrong. Please try again.'); }
     setSaving(false);

@@ -18,6 +18,12 @@ const STATUSES = [
 export default function ReturnQueue() {
   const { me, assignments } = useOutletContext();
   const myEmail = me?.email;
+  const isAdmin = me?.role === 'admin';
+  // Only the office (admin) moves a return into or out of Filed/Funded; the
+  // database enforces this too. Preparers see those stages but can't pick them.
+  const statusOptionsFor = (current) => STATUSES
+    .filter((st) => isAdmin || !['Filed', 'Funded'].includes(st) || st === current)
+    .map((st) => ({ value: st, label: st, disabled: !isAdmin && ['Filed', 'Funded'].includes(st) }));
   const qc = useQueryClient();
   // Load this preparer's record to get their comp tier for earning calculations.
   const { data: myPreparerRows = [] } = useQuery({
@@ -164,7 +170,7 @@ export default function ReturnQueue() {
                         <MobileSelect
                           value={a.status}
                           onChange={(v) => setStatus(a.id, v)}
-                          options={STATUSES.map(st => ({ value: st, label: st }))}
+                          options={statusOptionsFor(a.status)}
                           className="h-8 text-xs"
                           label="Return Status"
                         />

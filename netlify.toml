@@ -11,6 +11,9 @@
   VITE_SUPABASE_URL = "https://rbnptihuzettzrvaqmbw.supabase.co"
   VITE_SUPABASE_PUBLISHABLE_KEY = "sb_publishable_Np--XrUKSQUq2CzrDD9ydQ_26ujv6cD"
 
+[functions]
+  node_bundler = "esbuild"
+
 # Single-page app: every route (/suite, /admin, /form/...) loads index.html.
 [[redirects]]
   from   = "/*"

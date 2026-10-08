@@ -45,6 +45,10 @@ export default function FirmReturns() {
     const a = assignments.find((x) => x.id === id);
     const updated = await base44.entities.ClientAssignment.update(id, { status });
     await syncEarningForAssignment({ ...a, status }, compTierFor(a?.preparer_email));
+    // Let the preparer know their client was transmitted / funded.
+    if (status === 'Filed' || status === 'Funded') {
+      try { await base44.functions.invoke('notifyPreparer', { event: 'return_filed', assignment_id: id }); } catch (e) { /* best-effort */ }
+    }
     qc.invalidateQueries({ queryKey: ['firmReturns'] });
     qc.invalidateQueries({ queryKey: ['firmEarnings'] });
   };

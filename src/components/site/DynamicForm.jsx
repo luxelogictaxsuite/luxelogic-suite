@@ -13,25 +13,6 @@ import MobileSelect from '@/components/ui/mobile-select';
 const opts = (s = '') => (s || '').split(',').map(o => o.trim()).filter(Boolean);
 const isLong = (s) => (s || '').length > 100;
 
-// Safe field labels to look for in form values (for notification email only).
-const SAFE_LABELS = {
-  firstName: ['Full Legal First Name', 'First Name', 'First name', 'Legal First Name'],
-  lastName: ['Full Legal Last Name', 'Last Name', 'Last name', 'Legal Last Name'],
-  preferredName: ['Preferred Name', 'Preferred name'],
-  email: ['Email', 'Email Address', 'Email address'],
-  phone: ['Phone', 'Phone Number', 'Phone number', 'Mobile', 'Mobile Number'],
-  software: ['Software', 'Which software did you purchase?', 'Software Preference', 'Software preference'],
-};
-
-function extractSafeFields(values) {
-  const out = {};
-  for (const [key, labels] of Object.entries(SAFE_LABELS)) {
-    for (const label of labels) {
-      if (values[label]) { out[key] = values[label]; break; }
-    }
-  }
-  return out;
-}
 
 // Renders a native built form (FormDefinition) and saves a FormSubmission,
 // then notifies admins via the notifyFormSubmit backend function (sanitized —
@@ -114,36 +95,14 @@ export default function DynamicForm({ formId }) {
       const sub = await base44.entities.FormSubmission.create({
         form_definition_id: form.id,
         form_name: form.name,
-        submission_data: JSON.stringify(values).slice(0, 20000),
+        submission_data: JSON.stringify(values), // stored whole — truncating corrupted long, signed intakes
         status: 'New',
       });
-      // Route the intake to the preparer the client selected (private assignment + email notification).
-      if (form.name === '2026-2027 Client Intake') {
-        const prepName = values['Choose Your Preparer'];
-        if (prepName && !String(prepName).toLowerCase().startsWith('no preference')) {
-          const clientName = `${values['Full Legal First Name'] || ''} ${values['Full Legal Last Name'] || ''}`.trim();
-          try {
-            await base44.functions.invoke('routeIntake', {
-              submissionId: sub.id,
-              formName: form.name,
-              preparerName: prepName,
-              clientName,
-              clientEmail: values['Email'],
-              clientPhone: values['Phone'],
-            });
-          } catch (e) {}
-        }
-      }
-      // Send sanitized notification — only safe fields, never sensitive data.
-      const safe = extractSafeFields(values);
-      try {
-        await base44.functions.invoke('notifyFormSubmit', {
-          formName: form.name,
-          submissionId: sub.id,
-          submittedAt: new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }),
-          ...safe,
-        });
-      } catch (e) {}
+      // Route the intake to the preparer the client selected, then notify
+      // admins. The server reads everything from the saved submission itself;
+      // only its id is sent, so nothing sensitive travels in these calls.
+      try { await base44.functions.invoke('routeIntake', { submissionId: sub.id }); } catch (e) { /* best-effort */ }
+      try { await base44.functions.invoke('notifyFormSubmit', { submissionId: sub.id }); } catch (e) { /* best-effort */ }
       setDone(true);
     } catch (err) {
       setError(err.message || 'Something went wrong. Please try again.');

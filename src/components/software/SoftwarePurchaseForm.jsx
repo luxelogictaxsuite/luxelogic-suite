@@ -27,7 +27,7 @@ export default function SoftwarePurchaseForm() {
     setSaving(true); setError('');
     try {
       await base44.entities.SoftwarePurchase.create({ ...f, status: 'New' });
-      try { await base44.functions.invoke('notifySoftwarePurchase', { ...f }); } catch (e) { /* admin notification is best-effort */ }
+      try { await base44.functions.invoke('notifySoftwarePurchase', { email: f.email }); } catch (e) { /* admin notification is best-effort */ }
       const regKey = f.software === 'OLT Pro' ? 'registration_olt' : 'registration_taxslayer';
       const link = links?.[regKey]?.url;
       if (link) { window.location.href = link; return; }
