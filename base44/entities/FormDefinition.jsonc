@@ -1,0 +1,79 @@
+{
+  "name": "FormDefinition",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "string",
+      "description": "URL-friendly identifier used in /form/<slug> links. Auto-generated from the name if left blank."
+    },
+    "description": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "Tax Clients",
+        "Join Team",
+        "Software",
+        "General"
+      ],
+      "default": "General"
+    },
+    "success_message": {
+      "type": "string"
+    },
+    "fields": {
+      "type": "string",
+      "description": "JSON array of field definitions: {label, type, required, placeholder, options}"
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
+    },
+    "coming_soon": {
+      "type": "boolean",
+      "default": false,
+      "description": "Legacy coming-soon toggle \u2014 superseded by form_status when set"
+    },
+    "form_status": {
+      "type": "string",
+      "enum": [
+        "accepting",
+        "coming_soon",
+        "closed"
+      ],
+      "default": "accepting",
+      "description": "Controls whether the public form accepts submissions: accepting (live), coming_soon (visible but not fillable), closed (visible but submissions blocked)"
+    },
+    "sort_order": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "name",
+    "category",
+    "fields"
+  ],
+  "rls": {
+    "read": {},
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

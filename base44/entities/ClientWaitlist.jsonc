@@ -1,0 +1,76 @@
+{
+  "name": "ClientWaitlist",
+  "type": "object",
+  "properties": {
+    "full_name": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "dependents": {
+      "type": "number",
+      "default": 0
+    },
+    "filing_status": {
+      "type": "string",
+      "enum": [
+        "Single",
+        "Married Filing Jointly",
+        "Married Filing Separately",
+        "Head of Household",
+        "Qualifying Surviving Spouse"
+      ],
+      "default": "Single"
+    },
+    "preferred_contact": {
+      "type": "string",
+      "enum": [
+        "Phone",
+        "Email",
+        "Text"
+      ],
+      "default": "Phone"
+    },
+    "preparer_name": {
+      "type": "string",
+      "description": "The preparer the client chose \u2014 used to route the waitlist entry for notification"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "Waiting",
+        "Contacted",
+        "Onboarded"
+      ],
+      "default": "Waiting"
+    }
+  },
+  "required": [
+    "full_name",
+    "phone"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

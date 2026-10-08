@@ -1,0 +1,50 @@
+{
+  "name": "FormSubmission",
+  "type": "object",
+  "properties": {
+    "form_definition_id": {
+      "type": "string"
+    },
+    "form_name": {
+      "type": "string"
+    },
+    "submission_data": {
+      "type": "string",
+      "description": "JSON object of submitted values \u2014 may contain private file URIs and sensitive PII; admin-only"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "New",
+        "Under Review",
+        "Approved",
+        "Incomplete",
+        "Completed",
+        "Archived"
+      ],
+      "default": "New"
+    }
+  },
+  "required": [
+    "form_definition_id",
+    "submission_data"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {},
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

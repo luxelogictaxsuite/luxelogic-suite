@@ -1,0 +1,91 @@
+{
+  "name": "Earning",
+  "type": "object",
+  "properties": {
+    "assignment_id": {
+      "type": "string"
+    },
+    "client_name": {
+      "type": "string"
+    },
+    "preparer_email": {
+      "type": "string",
+      "description": "Anchors RLS \u2014 only this preparer (matched by email) and admins can see the record"
+    },
+    "return_fee": {
+      "type": "number"
+    },
+    "tier": {
+      "type": "string",
+      "enum": [
+        "70/30",
+        "80/20"
+      ],
+      "default": "70/30"
+    },
+    "preparer_share": {
+      "type": "number"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "Pending",
+        "Paid"
+      ],
+      "default": "Pending"
+    },
+    "paid_date": {
+      "type": "string",
+      "format": "date"
+    }
+  },
+  "required": [
+    "client_name",
+    "preparer_email",
+    "return_fee",
+    "status"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "data.preparer_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "$or": [
+        {
+          "data.preparer_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.preparer_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

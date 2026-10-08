@@ -1,0 +1,176 @@
+@import url('https://fonts.googleapis.com/css2?family=Arapey:ital,wght@0,400;0,700;1,400&family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 8%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 8%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 8%;
+    --primary: 36 39% 44%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 8%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 42%;
+    --accent: 0 0% 93%;
+    --accent-foreground: 0 0% 8%;
+    --highlight: 173 100% 41%;
+    --highlight-foreground: 0 0% 8%;
+    --success: 150 55% 40%;
+    --success-foreground: 0 0% 100%;
+    --destructive: 0 72% 48%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 90%;
+    --input: 0 0% 88%;
+    --ring: 36 39% 44%;
+    --chart-1: 36 39% 44%;
+    --chart-2: 173 100% 41%;
+    --chart-3: 0 0% 60%;
+    --chart-4: 0 0% 40%;
+    --chart-5: 0 0% 75%;
+    --radius: 0.25rem;
+    --font-heading: 'Arapey', Georgia, serif;
+    --font-body: 'Inter Tight', ui-sans-serif, system-ui, sans-serif;
+    --font-display: 'Arapey', Georgia, serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 0 0% 8%;
+    --sidebar-primary: 36 39% 44%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 93%;
+    --sidebar-accent-foreground: 0 0% 8%;
+    --sidebar-border: 0 0% 90%;
+    --sidebar-ring: 36 39% 44%;
+  }
+
+  /* True dark palette — applied via .dark class OR system preference (unless .light forces light). */
+  .dark {
+    --background: 224 71% 4%;
+    --foreground: 210 20% 98%;
+    --card: 224 71% 6%;
+    --card-foreground: 210 20% 98%;
+    --popover: 224 71% 6%;
+    --popover-foreground: 210 20% 98%;
+    --primary: 36 39% 55%;
+    --primary-foreground: 224 71% 4%;
+    --secondary: 224 71% 9%;
+    --secondary-foreground: 210 20% 98%;
+    --muted: 224 71% 10%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 224 71% 12%;
+    --accent-foreground: 210 20% 98%;
+    --highlight: 173 100% 45%;
+    --highlight-foreground: 224 71% 4%;
+    --success: 150 55% 45%;
+    --success-foreground: 224 71% 4%;
+    --destructive: 0 62% 52%;
+    --destructive-foreground: 210 20% 98%;
+    --border: 224 71% 14%;
+    --input: 224 71% 16%;
+    --ring: 36 39% 55%;
+    --chart-1: 36 39% 55%;
+    --chart-2: 173 100% 45%;
+    --chart-3: 215 20% 65%;
+    --chart-4: 215 20% 45%;
+    --chart-5: 215 20% 75%;
+    --sidebar-background: 224 71% 6%;
+    --sidebar-foreground: 210 20% 98%;
+    --sidebar-primary: 36 39% 55%;
+    --sidebar-primary-foreground: 224 71% 4%;
+    --sidebar-accent: 224 71% 12%;
+    --sidebar-accent-foreground: 210 20% 98%;
+    --sidebar-border: 224 71% 14%;
+    --sidebar-ring: 36 39% 55%;
+  }
+
+  /* Site is locked to the light LuxeLogic brand palette.
+     Dark mode is available via the .dark class if ever needed, but it
+     no longer follows the OS dark-mode setting (which caused the site
+     to go dark on phones in dark mode). */
+}
+
+@layer base {
+  /* WebView: disable overscroll rubber-banding and smooth the scroll. */
+  html {
+    overscroll-behavior-y: none;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+    font-size: 17px;
+    line-height: 1.6;
+    overscroll-behavior-y: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* WebView: prevent long-press callouts and text selection on chrome/controls,
+     while keeping form fields selectable. */
+  button,
+  a,
+  h1, h2, h3, h4, h5, h6,
+  svg,
+  .eyebrow,
+  [role="tab"],
+  nav {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  input, textarea, select {
+    -webkit-user-select: text;
+    user-select: text;
+  }
+
+  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, [role="tab"]:focus-visible {
+    outline: 3px solid hsl(var(--primary));
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .grid-scaffold {
+    background-image: none;
+  }
+  @media (min-width: 768px) {
+    .grid-scaffold {
+      background-image: linear-gradient(to right, hsl(0 0% 0% / 0.045) 1px, transparent 1px);
+      background-size: calc(100% / 12) 100%;
+    }
+  }
+  .eyebrow {
+    @apply font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground;
+  }
+}
+
+@layer utilities {
+  .text-highlight { color: hsl(var(--highlight)); }
+  .bg-highlight { background-color: hsl(var(--highlight)); }
+  .text-highlight-foreground { color: hsl(var(--highlight-foreground)); }
+  .bg-highlight-foreground { background-color: hsl(var(--highlight-foreground)); }
+  .border-highlight { border-color: hsl(var(--highlight)); }
+  .text-success { color: hsl(var(--success)); }
+  .bg-success { background-color: hsl(var(--success)); }
+  .text-success-foreground { color: hsl(var(--success-foreground)); }
+
+  /* Safe-area insets for notched / rounded-display mobile WebViews. */
+  .pt-safe { padding-top: env(safe-area-inset-top); }
+  .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+  .pl-safe { padding-left: env(safe-area-inset-left); }
+  .pr-safe { padding-right: env(safe-area-inset-right); }
+  .h-safe-bottom { height: env(safe-area-inset-bottom); }
+}
+
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.animate-ticker { animation: ticker 75s linear infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .animate-ticker { animation: none; }
+}

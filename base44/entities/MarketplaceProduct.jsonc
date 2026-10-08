@@ -1,0 +1,60 @@
+{
+  "name": "MarketplaceProduct",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "brand": {
+      "type": "string"
+    },
+    "price": {
+      "type": "number"
+    },
+    "seats_included": {
+      "type": "number",
+      "default": 1
+    },
+    "extra_seat_price": {
+      "type": "number"
+    },
+    "description": {
+      "type": "string"
+    },
+    "link_key": {
+      "type": "string",
+      "description": "SiteLink key for this product's payment link"
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
+    },
+    "sort_order": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "name",
+    "price",
+    "link_key"
+  ],
+  "rls": {
+    "read": {},
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

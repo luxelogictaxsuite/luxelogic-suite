@@ -1,0 +1,102 @@
+{
+  "name": "SupportTicket",
+  "type": "object",
+  "properties": {
+    "subject": {
+      "type": "string"
+    },
+    "client_name": {
+      "type": "string"
+    },
+    "client_email": {
+      "type": "string"
+    },
+    "preparer_email": {
+      "type": "string",
+      "description": "Anchors RLS \u2014 only this preparer (matched by email) and admins can see the record"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "Return Question",
+        "Document Issue",
+        "Refund",
+        "Software",
+        "Billing",
+        "Other"
+      ],
+      "default": "Other"
+    },
+    "priority": {
+      "type": "string",
+      "enum": [
+        "Low",
+        "Normal",
+        "High",
+        "Urgent"
+      ],
+      "default": "Normal"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "Open",
+        "In Progress",
+        "Resolved",
+        "Closed"
+      ],
+      "default": "Open"
+    },
+    "message": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "subject",
+    "preparer_email",
+    "status"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "data.preparer_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "$or": [
+        {
+          "data.preparer_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.preparer_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

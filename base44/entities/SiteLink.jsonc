@@ -1,0 +1,44 @@
+{
+  "name": "SiteLink",
+  "type": "object",
+  "properties": {
+    "key": {
+      "type": "string",
+      "description": "Unique identifier referenced by pages, e.g. book_a_call"
+    },
+    "label": {
+      "type": "string",
+      "description": "Human-readable name shown in admin and as link title"
+    },
+    "url": {
+      "type": "string",
+      "description": "The actual destination URL"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "key",
+    "label"
+  ],
+  "rls": {
+    "read": {},
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

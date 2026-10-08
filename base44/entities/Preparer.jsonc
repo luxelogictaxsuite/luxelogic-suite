@@ -1,0 +1,88 @@
+{
+  "name": "Preparer",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Full display name \u2014 must match the intake dropdown option exactly"
+    },
+    "email": {
+      "type": "string",
+      "description": "The preparer's app-account email; used to route and gate their assignments"
+    },
+    "ptin": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "comp_tier": {
+      "type": "string",
+      "enum": [
+        "70/30",
+        "80/20"
+      ],
+      "default": "70/30"
+    },
+    "ce_hours_completed": {
+      "type": "number",
+      "default": 0
+    },
+    "ce_hours_required": {
+      "type": "number",
+      "default": 15
+    },
+    "training_seat_key": {
+      "type": "string",
+      "description": "This preparer's individual Tax Prep Boot Camp seat key \u2014 shown in their Suite Training tab"
+    },
+    "locked_fields": {
+      "type": "string",
+      "description": "JSON array of field keys the preparer cannot self-edit from the Suite, e.g. [\"ptin\",\"comp_tier\",\"training_seat_key\"]"
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "name",
+    "email"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "data.email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "$or": [
+        {
+          "data.email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "name": "ClientAssignment",
+  "type": "object",
+  "properties": {
+    "client_name": {
+      "type": "string"
+    },
+    "client_email": {
+      "type": "string"
+    },
+    "client_phone": {
+      "type": "string"
+    },
+    "preparer_name": {
+      "type": "string"
+    },
+    "preparer_email": {
+      "type": "string",
+      "description": "Anchors RLS \u2014 only this preparer (matched by email) and admins can see the record"
+    },
+    "form_submission_id": {
+      "type": "string"
+    },
+    "intake_summary": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "Awaiting Documents",
+        "Ready for Review",
+        "In Progress",
+        "Needs Correction",
+        "Filed",
+        "Funded"
+      ],
+      "default": "Awaiting Documents"
+    },
+    "review_requested_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the preparer marked this return Ready for Review \u2014 used by the admin Firm Returns dashboard"
+    },
+    "return_fee": {
+      "type": "number",
+      "description": "How much the preparer charged the client for this return \u2014 flows into earnings"
+    },
+    "filing_status": {
+      "type": "string"
+    },
+    "claims_eitc": {
+      "type": "boolean",
+      "default": false
+    },
+    "claims_ctc": {
+      "type": "boolean",
+      "default": false
+    },
+    "claims_hoh": {
+      "type": "boolean",
+      "default": false
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "client_name",
+    "preparer_email",
+    "status"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "data.preparer_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "$or": [
+        {
+          "data.preparer_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

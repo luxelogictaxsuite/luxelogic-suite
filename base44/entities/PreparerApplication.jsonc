@@ -1,0 +1,76 @@
+{
+  "name": "PreparerApplication",
+  "type": "object",
+  "properties": {
+    "full_name": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "city_state": {
+      "type": "string"
+    },
+    "ptin": {
+      "type": "string"
+    },
+    "years_experience": {
+      "type": "string",
+      "enum": [
+        "New preparer",
+        "1-2 years",
+        "3-5 years",
+        "6+ years"
+      ]
+    },
+    "projected_returns": {
+      "type": "number"
+    },
+    "software_preference": {
+      "type": "string",
+      "enum": [
+        "TaxSlayer Pro",
+        "OLT Pro",
+        "No preference"
+      ]
+    },
+    "notes": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "New",
+        "Reviewing",
+        "Approved",
+        "Declined"
+      ],
+      "default": "New"
+    }
+  },
+  "required": [
+    "full_name",
+    "email",
+    "ptin"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

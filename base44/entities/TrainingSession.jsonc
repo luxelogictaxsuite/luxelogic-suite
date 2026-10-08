@@ -1,0 +1,73 @@
+{
+  "name": "TrainingSession",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "hours": {
+      "type": "number",
+      "default": 0
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "Annual Federal Tax Law Refresher",
+        "Ethics",
+        "Other CE",
+        "Firm Onboarding",
+        "Software Training"
+      ],
+      "default": "Other CE"
+    },
+    "preparer_email": {
+      "type": "string",
+      "description": "Anchors RLS \u2014 only this preparer (matched by email) and admins can see the record"
+    },
+    "preparer_name": {
+      "type": "string"
+    },
+    "attended": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "title",
+    "preparer_email",
+    "hours"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "data.preparer_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
